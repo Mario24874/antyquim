@@ -1,20 +1,22 @@
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, Marker, DirectionsService, DirectionsRenderer, useLoadScript } from '@react-google-maps/api';
 import { useState, useEffect } from 'react';
 
-// Define las librerías fuera del componente
 const libraries = ['places'];
 
 const Map = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
-  // Coordenadas de la empresa (Antyquim, C.A.)
   const companyLocation = {
     lat: 10.0530946,
     lng: -69.3820647,
   };
 
-  // Obtener la ubicación del usuario
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
+    libraries,
+  });
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -33,7 +35,6 @@ const Map = () => {
     }
   }, []);
 
-  // Calcular las direcciones
   const calculateDirections = () => {
     if (userLocation) {
       const directionsService = new google.maps.DirectionsService();
@@ -54,31 +55,26 @@ const Map = () => {
     }
   };
 
-  // Estilo del contenedor del mapa
   const containerStyle = {
     width: '100%',
     height: '400px',
   };
 
-  // Clave API de Google Maps
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
+  if (loadError) {
+    return <div>Error al cargar el mapa</div>;
+  }
 
-  if (!apiKey) {
-    return (
-      <div className="h-[400px] bg-gray-100 flex items-center justify-center text-gray-500">
-        <p>Por favor, configura tu clave API de Google Maps.</p>
-      </div>
-    );
+  if (!isLoaded) {
+    return <div>Cargando el mapa...</div>;
   }
 
   return (
-    <LoadScript googleMapsApiKey={apiKey} libraries={libraries}>
+    <>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={companyLocation}
         zoom={15}
       >
-        {/* Marcador de la empresa */}
         <Marker
           position={companyLocation}
           title="Antyquim, C.A."
@@ -90,7 +86,6 @@ const Map = () => {
           }}
         />
 
-        {/* Marcador de la ubicación del usuario */}
         {userLocation && (
           <Marker
             position={userLocation}
@@ -102,7 +97,6 @@ const Map = () => {
           />
         )}
 
-        {/* Direcciones */}
         {directions && (
           <DirectionsRenderer
             directions={directions}
@@ -117,14 +111,13 @@ const Map = () => {
         )}
       </GoogleMap>
 
-      {/* Botón para calcular las direcciones */}
       <button
         onClick={calculateDirections}
         className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
       >
         Cómo llegar
       </button>
-    </LoadScript>
+    </>
   );
 };
 
