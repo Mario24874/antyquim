@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - VITE_GOOGLE_MAPS_API_KEY=AIzaSyBeMQ3C50ZvWo4MF84A09wjMuTEClGYZ84
+    restart: always  # Reiniciar automáticamente
+    command: npm run dev
