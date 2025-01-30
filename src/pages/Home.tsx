@@ -6,7 +6,7 @@ const Home = () => {
     <div className="min-h-screen">
       <div className="relative h-[600px]">
         <img
-          src="/LogoAntyquim.png"
+          src="/LogoAntyquimRSF.png"
           alt="Galvanizado industrial"
           className="w-full h-full object-cover"
         />

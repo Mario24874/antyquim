@@ -12,16 +12,31 @@ const Contact = () => {
             <h3 className="text-xl font-semibold mb-6">Información de Contacto</h3>
             
             <div className="space-y-4">
+              {/* Número de teléfono con enlace a WhatsApp */}
               <div className="flex items-center space-x-3">
                 <Phone className="text-blue-600" />
-                <span>+58 (251) 442130 / (0414) 9529239</span>
+                <a
+                  href="https://wa.me/5804149529239"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  +5804149529239
+                </a>
               </div>
               
+              {/* Correo electrónico con enlace a mailto */}
               <div className="flex items-center space-x-3">
                 <Mail className="text-blue-600" />
-                <span>sergiopzonca@gmail.com</span>
+                <a
+                  href="mailto:sergiopzonca@gmail.com"
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  sergiopzonca@gmail.com
+                </a>
               </div>
               
+              {/* Dirección física */}
               <div className="flex items-center space-x-3">
                 <MapPin className="text-blue-600" />
                 <span>Carrera 1 entre calles 1 y 2, San Francisco. Barquisimeto, Venezuela</span>
